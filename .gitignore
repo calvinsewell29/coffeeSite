@@ -1,0 +1,23 @@
+# macOS system files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Node modules (if you use npm in the future)
+node_modules/
+
+# Build output directories (if using build tools later)
+dist/
+build/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Compiled CSS from preprocessors (optional)
+*.css.map
+
+# Optional cache/config
+.env
+.cache/
