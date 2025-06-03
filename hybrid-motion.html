@@ -1,77 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>How to Level up Your Coffee Game</title>
+
+  <link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700;900&display=swap"
+  rel="stylesheet"
+  />
+
   <style>
+    a::after {
+    content: "↗";
+    margin-left: 0.2em;
+    color: var(--poo);
+    font-size: 0.9em;
+  }
+  a:hover::after {
+    color: var(--poo);
+  }
+
+/* 3) If you only want this on “inline” links (and not captions), scope accordingly. 
+   For example, if captions use .caption a, you could change the selector to:
+   
+   .caption a::before { … }
+   .caption a:hover::before { … }
+*/
+    /*────────────────────────────────────────────────────────────────────────
+      Color Palette Variables (Dark “Roasty” Coffee Theme + Scroll Targets)
+    ────────────────────────────────────────────────────────────────────────*/
+    :root {
+      /* Background Layers */
+      --bg-dark:      #3a3632;                /* deep charcoal‐brown */
+      --bg-pattern:   url("burla.png");       /* faint burlap texture */
+
+      /* Text‐Color Endpoints for Scroll Interpolation */
+      --brown-dark:   #a38271;  /* “top” color: dark brown */
+      --brown-light:  #785e51;  /* “bottom” color: light tan */
+
+      /* This is the variable that JS will override as you scroll: */
+      --text-scroll:  var(--brown-dark);
+
+      /* Primary Accents (Headings, etc.) */
+      --brown-mid:    #2e4a41;  /* warm brown for headings & inline links */
+      --brown-soft:   #151310;  /* very dark accent for subtle headings */
+
+      /* Greens for all link pops */
+      --green-forest: #628179;  /* forest‐green for default link color */
+      --green-mint:   #afc3b0;  /* mint‐green for link hover */
+
+      /* Secondary text (captions, etc.) */
+      --text-muted:   #fffcf9;  /* nearly white (visible against dark BG) */
+
+      --poo:   #353535ca;
+    }
+
+    /*────────────────────────────────────────────────────────────────────────
+      Global Reset & Body Styling (layered background + scroll‐driven text)
+    ────────────────────────────────────────────────────────────────────────*/
     body {
       margin: 0;
-      background-color: #f2e9e4;
-      color: #4a3927;
-      font-family: "Segoe UI", Roboto, sans-serif;
+      /* 95%‐opaque overlay on burlap pattern, then fallback to bg‐dark */
+      background:
+        linear-gradient(rgba(35, 30, 26, 0.85), rgba(19, 17, 14, 0.85)),
+        var(--bg-pattern);
+      background-color: var(--bg-dark);
+      background-repeat: repeat;
+      color: var(--text-scroll); /* ← THIS will tween from --brown-dark → --brown-light */
+      font-family: "Montserrat", sans-serif;
+      font-weight: 100;
       line-height: 1.8;
       font-size: 1.1rem;
       padding: 40px 20px;
-      max-width: 900px;
+      max-width: 1200px;
       margin-left: auto;
       margin-right: auto;
     }
 
-    h1, h2, h3 {
+    /*────────────────────────────────────────────────────────────────────────
+      Headings (always a solid brown for contrast)
+    ────────────────────────────────────────────────────────────────────────*/
+    h1 {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 200;
+      font-size: 5rem;           /* ← make the main title much larger */
+      letter-spacing: 0.5px;
       text-align: center;
-      margin-bottom: 1em;
+      color: var(--text-scroll);
+      margin-bottom: .2em;
+    }
+    h2 {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      font-size: 1.75rem;         /* you can adjust sub-heading size too */
+      letter-spacing: 0.5px;
+      text-align: center;
+      color: var(--text-scroll);
+      margin-bottom: .2em;
+    }
+    h2 a::before {
+      content: ""; /* point to your icon file */
+      display: inline-block;
+      width: 0.8em;               /* desired icon width relative to text size */
+      height: 0.8em;              /* desired icon height */
+      margin-left: 0.3em;        /* space between icon and caption text */
+      vertical-align: -.07em;      /* align icon to text baseline */
+      background-image: url("arrow.png");
+      background-size: contain;   /* scale the PNG to fit within the 0.8em × 0.8em box */
+      background-repeat: no-repeat;
+      background-position: center;
+      top: -1em;               /* same opacity as .caption icon */
+    }
+    h3 {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 200;
+      font-size: 1.5rem;         /* you can adjust sub-heading size too */
+      letter-spacing: 0.5px;
+      text-align: center;
+      color: var(--text-scroll);
+      margin-bottom: .2em;
     }
 
+    /*────────────────────────────────────────────────────────────────────────
+      Hero Image
+    ────────────────────────────────────────────────────────────────────────*/
     img.hero-image {
       width: 100%;
-      max-width: 900px;
-      margin: 40px 0;
+      max-width: 1200px;
+      margin-top: 40px;
+      margin-bottom: 0px;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
+    /*────────────────────────────────────────────────────────────────────────
+      Image Row (IKEA funnel + setup)
+    ────────────────────────────────────────────────────────────────────────*/
     .image-row {
       display: flex;
       gap: 20px;
       justify-content: center;
       margin: 40px 0;
     }
-
     .image-row div {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 48%;
     }
-
     .image-row img {
       width: 100%;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      margin-bottom: 0;
     }
 
+    /*────────────────────────────────────────────────────────────────────────
+      Captions Under Images (Link style)
+    ────────────────────────────────────────────────────────────────────────*/
     .caption {
+      
       text-align: center;
-      font-size: 0.95rem;
-      margin-bottom: 40px;
+      font-size: 1.2rem;
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: var(--text-muted);
+    }
+    .caption::after {
+      content: ""; /* point to your icon file */
+      display: inline-block;
+      width: 0.8em;               /* desired icon width relative to text size */
+      height: 0.8em;              /* desired icon height */
+      margin-left: 0.3em;        /* space between icon and caption text */
+      vertical-align: -.07em;      /* align icon to text baseline */
+      background-image: url("arrow.png");
+      background-size: contain;   /* scale the PNG to fit within the 0.8em × 0.8em box */
+      background-repeat: no-repeat;
+      background-position: center;
+      top: -1em;
+    }
+    .caption a {
+      color: var(--green-forest);
+      font-weight: 300;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .caption a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      height: 2px;
+      width: 0;
+      background-color: var(--brown-mid);
+      transition: width 0.3s ease;
+    }
+    .caption a:hover,
+    .caption a:focus {
+      color: var(--green-mint);
+    }
+    .caption a:hover::after,
+    .caption a:focus::after {
+      width: 100%;
     }
 
+    /*────────────────────────────────────────────────────────────────────────
+      Inline Links (in paragraphs, headings) – default forest green,
+      hover → mint green, underline animates on hover
+    ────────────────────────────────────────────────────────────────────────*/
     a {
-      color: #4a3927;
-      text-decoration: underline;
+      position: relative;
+      color: var(--green-forest);
+      text-decoration: none;
       font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      height: 2px;
+      width: 0;
+      background-color: var(--green-forest);
+      transition: width 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: var(--green-mint);
+    }
+    a:hover::after,
+    a:focus::after {
+      width: 100%;
+      background-color: var(--green-mint);
     }
 
+    /*────────────────────────────────────────────────────────────────────────
+      Article spacing & override text color (inherits var(--text-scroll))
+    ────────────────────────────────────────────────────────────────────────*/
     article {
       margin-bottom: 60px;
+      color: var(--text-scroll);
+    }
+    article p {
+      color: var(--text-scroll);
+    }
+    article h2 {
+      color: var(--brown-mid);
+    }
+
+    /*────────────────────────────────────────────────────────────────────────
+      Optional Section Backgrounds (if you ever wrap content in .section / .section-alt)
+      — unchanged from before, so left here for reference.
+    ────────────────────────────────────────────────────────────────────────*/
+    .section {
+      background-color: #FFF;
+      padding: 80px 20px;
+      color: #222;
+    }
+    .section-alt {
+      background-color: var(--bg-dark);
+      background-image: var(--bg-pattern);
+      background-repeat: repeat;
+      padding: 80px 20px;
+      color: var(--text-scroll);
     }
   </style>
 </head>
 <body>
-  <h1>How to Level up Your Coffee Game</h1>
-  <h3>A Guide to Understanding and Getting into Third-Wave Coffee<br>By Calvin Sewell</h3>
+  <h1>A Guide to Third-Wave Coffee</h1>
+  <h3>Calvin Sewell</h3>
   <img src="coffee1.png" alt="Coffee on table" class="hero-image">
 
   <article>
@@ -165,7 +366,11 @@
   </article>
 
   <article>
-    <h2><a href="https://www.youtube.com/watch?v=BG5Tc8MR2_4" target="_blank">Pour Over Recipe (Hedrick)</a></h2>
+    <h2>
+      <a href="https://www.youtube.com/watch?v=BG5Tc8MR2_4" target="_blank">
+        Pour Over Recipe (Hedrick)
+      </a>
+    </h2>
     <p>
       • Up to 30g of coffee<br>
       • Medium grind size<br>
@@ -212,5 +417,76 @@
       <li>Lee, Kai-Sean, and Katherine Jayne Ruck. “Barista Diary: An Autoethnography Studying the Operational Experience of Third-Wave Coffee Shop Baristas.” OSF Preprints, 2021, <a href="https://osf.io/preprints/osf/a9f4u_v1" target="_blank">https://osf.io/preprints/osf/a9f4u_v1</a>. Accessed 1 June 2025.</li>
     </ul>
   </article>
+
+  <!--────────────────────────────────────────────────────────────────────────
+    Scroll‐Driven Color Interpolation Script (no extra file needed)
+  ────────────────────────────────────────────────────────────────────────-->
+  <script>
+    // Convert a hex string (#rrggbb) → { r, g, b }
+    function hexToRgb(hex) {
+      hex = hex.replace(/^#/, "");
+      let bigint = parseInt(hex, 16);
+      return {
+        r: (bigint >> 16) & 255,
+        g: (bigint >> 8) & 255,
+        b: bigint & 255
+      };
+    }
+
+    // Convert { r, g, b } → "#rrggbb"
+    function rgbToHex(r, g, b) {
+      const toHex = (v) => {
+        let h = v.toString(16);
+        return h.length < 2 ? "0" + h : h;
+      };
+      return "#" + toHex(r) + toHex(g) + toHex(b);
+    }
+
+    function updateTextColorOnScroll() {
+  // 1) Clamp scrollTop at 0 so negative values don’t “overshoot.”
+  let scrollTop = Math.max(window.scrollY || window.pageYOffset, 0);
+
+  // 2) Compute document height minus viewport height
+  let docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+  // 3) rawT goes from 0→1 as you scroll from top to bottom
+  let rawT = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+
+  // 4) Apply a “slow-start” easing (exponent < 1 makes it linger near 0 longer).
+  //    Try 0.5 or 0.4. The smaller the exponent, the longer it stays near the dark color.
+  let t = Math.pow(rawT, 100);
+
+  // 5) Grab the two endpoint colors from CSS variables
+  const root = getComputedStyle(document.documentElement);
+  const darkHex  = root.getPropertyValue("--brown-dark").trim();
+  const lightHex = root.getPropertyValue("--brown-light").trim();
+
+  // 6) Convert both to RGB, lerp, and re-assembly into hex:
+  const darkRGB  = hexToRgb(darkHex);
+  const lightRGB = hexToRgb(lightHex);
+  const r = Math.round(darkRGB.r + (lightRGB.r - darkRGB.r) * t);
+  const g = Math.round(darkRGB.g + (lightRGB.g - darkRGB.g) * t);
+  const b = Math.round(darkRGB.b + (lightRGB.b - darkRGB.b) * t);
+  const newColor = rgbToHex(r, g, b);
+
+  // 7) Update the CSS custom property
+  document.documentElement.style.setProperty("--text-scroll", newColor);
+}
+
+// Throttle via rAF
+let scheduled = false;
+window.addEventListener("scroll", () => {
+  if (!scheduled) {
+    scheduled = true;
+    window.requestAnimationFrame(() => {
+      updateTextColorOnScroll();
+      scheduled = false;
+    });
+  }
+});
+
+// Also run on load (in case user is already scrolled)
+window.addEventListener("load", updateTextColorOnScroll);
+  </script>
 </body>
 </html>
